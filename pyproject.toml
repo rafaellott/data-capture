@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=65.5.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data-capture"
+author = "Rafael Lott"
+version = "0.1.0"
+description = "Challenge for "
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
