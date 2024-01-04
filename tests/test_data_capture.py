@@ -1,5 +1,5 @@
 import unittest
-from src.main import DataCapture
+from data_capture.main import DataCapture
 
 
 class TestingDataCaptureNumNotExists(unittest.TestCase):
