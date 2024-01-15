@@ -126,5 +126,26 @@ class TestingDataCaptureComplex(unittest.TestCase):
         self.assertEqual(13, self.stats > 3)
 
 
+class TestingDataCaptureInvalidInput(unittest.TestCase):
+    def setUp(self):
+        self.capture = DataCapture()
+
+    def test_invalid_value_negative(self):
+        self.assertRaises(ValueError, self.capture.add, -1)
+
+    def test_invalid_value_gt_1000(self):
+        self.assertRaises(ValueError, self.capture.add, 1001)
+
+    def test_invalid_value_string(self):
+        self.assertRaises(ValueError, self.capture.add, "testing")
+
+    def test_ok_value_valid_string(self):
+        self.capture.add("5")
+        self.capture.add("10")
+        self.capture.add("20")
+        stats = self.capture.build_stats()
+        self.assertEqual(3, stats.less(25))
+
+
 if __name__ == '__main__':
     unittest.main()
