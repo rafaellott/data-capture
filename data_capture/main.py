@@ -67,24 +67,32 @@ class DataCapture:
     def __init__(self):
         self._internal_data = {}
         self._total = 0
+        self._lowest = 1000
+        self._highest = 0
 
     def add(self, number):
         number = int(number)
-        self._total += 1
-        if not self._internal_data.get(number):
-            self._internal_data[number] = 1
+        if 0 < number <= 1000:
+            self._total += 1
+            if not self._internal_data.get(number):
+                self._internal_data[number] = 1
+            else:
+                self._internal_data[number] += 1
+            if number < self._lowest:
+                self._lowest = number
+            if number > self._highest:
+                self._highest = number
         else:
-            self._internal_data[number] += 1
+            raise ValueError(
+                "Invalid value '%s'. Please provide a value between 1 and 1000.", number
+            )
 
     def build_stats(self):
         stats = {}
         prev = 0
-        start = min(self._internal_data.keys())
-        end = max(self._internal_data.keys()) + 1
-        for index in range(start, end):
+        for index in range(self._lowest, self._highest + 1):
             value = self._internal_data.get(index, 0)
             g = (self._total - prev - value)
             stats[index] = SingleStat(current=value, lower=prev, greater=g)
             prev += value
-
-        return _DataStats(data=stats, lowest=start, highest=end-1)
+        return _DataStats(data=stats, lowest=self._lowest, highest=self._highest)
